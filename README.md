@@ -23,8 +23,9 @@ This ties into the second objective where we want to create an
 environment that **encourages** the comparison of models.  Sklearn has
 become one of the easiest toolkits to carry out predictive analytics
 and it will be at the center of our solution for this objective.
+
 Proof of concept
---------------------
+-----------------
 Lets turn these two analyses into something shiny and new.
   * https://ajrichards.github.io/public/pieris-supplement/index.html
   * https://ajrichards.github.io/public/aad/index.html
@@ -34,6 +35,7 @@ Lets turn these two analyses into something shiny and new.
   * Heatmaps for differential expression analysis
   * Creation of gene sets for gene set enrichment analysis
   * Visualization of gene sets
+  
 Software stack
 ----------------
 For more details visit the documentation:
@@ -43,7 +45,8 @@ For more details visit the documentation:
   * `DESeq2 <http://bioconductor.org/packages/release/bioc/html/DESeq2.html>`_
   * `sklearn <http://scikit-learn.org/stable/>`_
   * `Flask <http://flask.pocoo.org>`_
+  
 Useful References
---------------------
+------------------
   * https://www.ncbi.nlm.nih.gov/pubmed/26399714
   * http://www.biorxiv.org/content/early/2016/12/02/091280.article-info
