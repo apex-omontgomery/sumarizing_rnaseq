@@ -1,12 +1,19 @@
-************
 Introduction
-************
 :Version: 0.1.1
 :Authors: William Montgomery, Gareth Halladay, Amber Scott, Anela Tosevska, Frank Burkholder, Adam Richards, Andrew Gaines
 :Web site: https://biof-git.colorado.edu/hackathon/summarizing_rnaseq
 :Documentation: ?????
 :Copyright: This document has been placed in the public domain.
 :License:  is released under the MIT License
+=======
+----------------
+Version: 0.1.1  
+Authors: William Montgomery, Gareth Halladay, Amber Scott, Anela Tosevska, Frank Burkholder, Adam Richards  
+Web site: https://biof-git.colorado.edu/hackathon/summarizing_rnaseq  
+Documentation: ?????  
+Copyright: This document has been placed in the public domain.  
+License:  is released under the MIT License
+
 Purpose
 ----------------
 RNA-Seq technologies have revolutionized the biological sciences.  One
