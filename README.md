@@ -1,6 +1,5 @@
-************
 Introduction
-************
+----------------
 Version: 0.1.1  
 Authors: William Montgomery, Gareth Halladay, Amber Scott, Anela Tosevska, Frank Burkholder, Adam Richards  
 Web site: https://biof-git.colorado.edu/hackathon/summarizing_rnaseq  
