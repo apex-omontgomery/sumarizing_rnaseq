@@ -23,7 +23,8 @@ CMD ["/etc/init.d/postgresql", "start"]
 USER root
 COPY . /app
 
-WORKDIR /app/htsint
+RUN git clone https://github.com/ajrichards/htsint.git /htsint
+WORKDIR /htsint
 RUN python3 setup.py install
 
 EXPOSE 5000
