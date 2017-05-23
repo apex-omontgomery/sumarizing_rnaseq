@@ -8,7 +8,7 @@ import numpy as np
 from htsint import run_subprocess
 
 
-class Associative(object):
+class Associative:
     """
     A generic class
     """
@@ -22,7 +22,7 @@ class Associative(object):
     def create_filtered(countsPath):
         if not os.path.exists(countsPath):
             raise Exception("Cannot find counts path")
-    
+
         filteredCountsPath = re.sub("\.csv","-filtered.csv",countsPath)
         fid1 = open(countsPath,'r')
         fid2 = open(filteredCountsPath,'w')
@@ -44,7 +44,7 @@ class Associative(object):
         run_subprocess(cmd)
 
 if __name__ == "__main__":
-    
+
     ## specify the locations
     homeDir = os.path.join(os.path.expanduser("~"),"sequencing","pieris")
     readsDir = os.path.join(homeDir,'reads')
@@ -54,8 +54,3 @@ if __name__ == "__main__":
     filteredCountsPath = create_filtered(countsPath)
     outFile = os.path.join(featuresDir,"deseq.csv")
     run_deseq(filteredCountsPath,outFile)
-
-
-        
-
-
