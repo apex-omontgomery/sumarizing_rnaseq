@@ -29,6 +29,17 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    {{ js_resources|indent(4)|safe }}
+
+    {{ css_resources|indent(4)|safe }}
+
+    {{ plot_script|indent(4)|safe }}
+
+    <STYLE type="text/css">
+        BODY {text-align: center}
+    </STYLE>
+
   </head>
 
   <body>
@@ -63,8 +74,8 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Contact</h1>
-        <p class="lead">This is where all our names go so the press may find us.<br>Ben Busby was not involved.</p>
+        <h1>Here is where our amazing visualizations live.</h1>
+        <p class="lead">We have your interactive heat maps.<br> We have your data in fewer dimensions.</p>
       </div>
 
     </div><!-- /.container -->
@@ -78,5 +89,11 @@
     <script src="../static/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../static/js/ie10-viewport-bug-workaround.js"></script>
+    <div style="width: 50%; display: inline-block;"> 
+        {{ plot_div | safe }}
+        {{ plot_script | safe }}
+    </div> 
+    <p> Demonstrates a simple bokeh heat map embedding into a Flask app</p>
+  
   </body>
 </html>
