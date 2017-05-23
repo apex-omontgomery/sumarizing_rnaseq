@@ -15,35 +15,39 @@ from bokeh.models import (
 )
 from bokeh.plotting import figure
 
+
+
 from flask import Flask, render_template
 app = Flask(__name__)
 
-def get_dataframe_and_axes(fname=None, gene_col_name=None):
+def get_dataframe_and_axes():
     ''' arbitrary data for now '''
-    df = pd.read_csv(fname)
-    #df.rename(columns=lambda x: x.strip().replace("'",""))
-    df['Gene_ID'] = df[gene_col_name].astype(str) 
-    df.drop([gene_col_name], axis=1, inplace=True)
-    df = df.set_index('Gene_ID')
-    df.columns.name = 'Samples' 
-    gene_lst = list(df.index)
-    sample_lst = list(df.columns)
-    df2 = pd.DataFrame(df.stack(), columns=['counts']).reset_index()
-    return df2, sample_lst, gene_lst 
+    from bokeh.sampledata.unemployment1948 import data
+    data['Year'] = data['Year'].astype(str)
+    data = data.set_index('Year')
+    data.drop('Annual', axis=1, inplace=True)
+    data.columns.name = 'Month'
+    years = list(data.index)
+    months = list(data.columns)
+    # reshape to 1D array or rates with a month and year for each row.
+    df = pd.DataFrame(data.stack(), columns=['rate']).reset_index()
+    return df, years, months
 
-def make_heatmap_object(df, sample_lst, gene_lst):
+
+def make_heatmap_object(df, years, months):
     ''' makes a bokeh figure '''
+    # this is the colormap from the original NYTimes plot
     colors = ["#75968f", "#a5bab7", "#c9d9d3", "#e2e2e2", "#dfccce", "#ddb7b1", "#cc7878", "#933b41", "#550b1d"]
-    mapper = LinearColorMapper(palette=colors, low=df['counts'].min(), high=df['counts'].max())
+    mapper = LinearColorMapper(palette=colors, low=df.rate.min(), high=df.rate.max())
 
     source = ColumnDataSource(df)
 
     TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
 
     # p is a bokeh figure object 
-    p = figure(title="Gene Expression",
-               x_range=sample_lst, y_range=gene_lst,
-               x_axis_location="above", plot_width=600, plot_height=900,
+    p = figure(title="US Unemployment ({0} - {1})".format(years[0], years[-1]),
+               x_range=years, y_range=list(reversed(months)),
+               x_axis_location="above", plot_width=900, plot_height=400,
                tools=TOOLS, toolbar_location='below')
 
     p.grid.grid_line_color = None
@@ -53,29 +57,31 @@ def make_heatmap_object(df, sample_lst, gene_lst):
     p.axis.major_label_standoff = 0
     p.xaxis.major_label_orientation = pi / 3
 
-    p.rect(x="Samples", y="Gene_ID", width=1, height=1,
+    p.rect(x="Year", y="Month", width=1, height=1,
            source=source,
-           fill_color={'field': 'counts', 'transform': mapper},
+           fill_color={'field': 'rate', 'transform': mapper},
            line_color=None)
 
     color_bar = ColorBar(color_mapper=mapper, major_label_text_font_size="5pt",
                          ticker=BasicTicker(desired_num_ticks=len(colors)),
-                         formatter=PrintfTickFormatter(format="%d"),
+                         formatter=PrintfTickFormatter(format="%d%%"),
                          label_standoff=6, border_line_color=None, location=(0, 0))
     p.add_layout(color_bar, 'right')
 
     p.select_one(HoverTool).tooltips = [
-         ('coord', '@Samples @Gene_ID'),
-         ('count', '@counts'),
+         ('date', '@Month @Year'),
+         ('rate', '@rate%'),
     ]
     return p
 
-@app.route("/")
-def index():
-    return render_template('index.html')
 
-@app.route("/visualize")
-def visualize():
+## home page
+#@app.route('/')
+#def index():
+#    return render_template('index.html')
+
+@app.route("/")
+def home_page():
     """ Simple embedding of a bokeh figure in Flask
 
     """
@@ -84,7 +90,7 @@ def visualize():
     # note that heapmap below is defined under if-name-main block
     script, div = components(heatmap)
     html = render_template(
-        'visualize.html',
+        'index_hm.html',
         plot_script=script,
         plot_div=div,
         js_resources=js_resources,
@@ -103,7 +109,8 @@ def contact():
     return render_template('contact.html')
 
 if __name__ == '__main__':
-    filename = 'data/Example_file.csv'
-    df, sample_lst, gene_lst = get_dataframe_and_axes(filename, 'Gene ID')
-    heatmap = make_heatmap_object(df, sample_lst, gene_lst)
-    app.run()
+    df, years, months = get_dataframe_and_axes()
+    heatmap = make_heatmap_object(df, years, months)
+    app.run(host='0.0.0.0', port=8080, debug=True)
+
+
