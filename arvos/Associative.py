@@ -49,15 +49,13 @@ if __name__ == "__main__":
     homeDir = os.path.join("..")
     readsDir = os.path.join(homeDir, "reads")
 
-    featuresDir = os.path.join(homeDir,"examples", "pieris")
-    countsPath = os.path.join(featuresDir,"data", "est_counts.csv")
-    outDirectory = os.path.join(featuresDir, "results")
+    parentDir = os.path.join(homeDir,"examples", "pieris")
+    countsPath = os.path.join(parentDir,"data", "est_counts.csv")
+    outDirectory = os.path.join(parentDir, "results")
     outFile = os.path.join(outDirectory, "deseq.csv")
 
     # check if results directory exists, if !exist create one
-    try:
-        os.stat(outDirectory)
-    except:
+    if not os.path.exists(outDirectory):
         os.mkdir(outDirectory)
 
 
