@@ -1,27 +1,37 @@
 name (-n) - the gene-set indicator i.e. xeno-iea
 aspect (-a) - bp, mf, cc
 
+This is a de-novo assembly example
 
-## Create functionally coherent gene lists for biological process
+------------------------------------------------------------------
+Work done before using arvos
+------------------------------------------------------------------
 
-(1) BLAST the reference genome (this only needs to be done once per assembly)
+ASSEMBLY
+
+    ~$ python preprocessReads.py
+    ~$ python runTrinity.py
+
+BLAST ASSEMBLY AGAINST SwissProt
+
     ~$ python runBlast.py
     ~$ python runBlastParse.py
     ~$ python runBlastSummarize.py
+    ~$ python showTaxaSummary.py
 
-(2) Create the term graph
-    ~$ python createTermGraph.py -n name -a bp
+------------------------------------------------------------------
+Start work with  arvos
+------------------------------------------------------------------
 
-(3) Calculate term distances
-    ~$ python calculateTermDistances.py -n name -a bp
-    ~$ python assembleDistances.py -n name -a bp
+CREATE ALL NECESSARY COUNT FILES
 
-(4) Calculate gene distances
-    ~$ python calculateGeneDistances.py -n name -a bp
+    ~$ runSailfish.py
+    ~$ assembleCountMatrices.py
 
-(6) Run spectral clustering
-    ~$ python spectralClusteringParamSearch.py -n -a bp
-    ~$ python runSpectralClustering.py -n name -a bp
 
-(8) Map names and assemble gene sets as gmt files
-    ~$ 
+DO ASSOCIATIVE ANALYSIS
+
+    ~$ runDeAnalysis.py
+    ~$ summarizeResultsDE.py	
+
+
