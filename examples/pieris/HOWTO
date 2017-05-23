@@ -1,6 +1,19 @@
 name (-n) - the gene-set indicator i.e. xeno-iea
 aspect (-a) - bp, mf, cc
 
+NOTES on sailfish install
+sudo apt-get install jellyfish
+sudo apt-get install libdivsufsort-dev
+sudo apt-get install libspdlog-dev libtbb-dev libbz2-dev libspdlog-dev libbz2-dev 
+sudo apt-get install cmake -DBOOST_ROOT=/usr/include/boost 
+sudo apt-get install
+sudo apt-get install 
+sudo apt-get install libboost-iostreams-dev
+sudo apt-get install ostree 
+sudo apt-get install 
+
+
+
 This is a de-novo assembly example
 
 ------------------------------------------------------------------
