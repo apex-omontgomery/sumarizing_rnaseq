@@ -44,12 +44,12 @@ Software stack
 ----------------
 For more details visit the documentation:
 
-  * (PostgreSQL)[www.postgresql.org]
-  * (SQLAlchemy)[http://www.sqlalchemy.org]_
-  * (htsint)[http://ajrichards.github.io/htsint]
-  * (DESeq2)[http://bioconductor.org/packages/release/bioc/html/DESeq2.html]
-  * (sklearn)[http://scikit-learn.org/stable]
-  * (Flask)[http://flask.pocoo.org]
+  * [PostgreSQL](www.postgresql.org)
+  * [SQLAlchemy](http://www.sqlalchemy.org)
+  * [htsint](http://ajrichards.github.io/htsint)
+  * [DESeq2](http://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+  * [sklearn]([http://scikit-learn.org/stable)
+  * [Flask](http://flask.pocoo.org)
   
 Useful References
 ------------------
