@@ -50,6 +50,18 @@ class Associative():
         cmd = "Rscript runDESeq.R %s %s"%(countsPath,outFile)
         print("running...\n%s"%cmd)
         self.run_subprocess(cmd)
+        
+    # input:
+    # (self, header array from count file, path (without file name))
+    # output:
+    # saved file for user to do something with. 
+    def two_group(self, head, c_Path):  
+        #is outputting a csv and having them manipulate good?
+        with open(c_Path+ 'vartypes.csv', 'w',newline='\n') as f:
+            writer = csv.writer(f)
+            writer.writerow(head)            
+            writer.writerow(['variable']+ ['0 or 1']*(len(head)-1))
+                
 
 if __name__ == "__main__":
 
