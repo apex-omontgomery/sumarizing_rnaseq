@@ -8,7 +8,7 @@ import numpy as np
 from htsint import run_subprocess
 
 
-class Associative:
+class Associative():
     """
     A generic class
     """
@@ -19,7 +19,7 @@ class Associative:
 
         """
 
-    def create_filtered(countsPath):
+    def create_filtered(self, countsPath):
         if not os.path.exists(countsPath):
             raise Exception("Cannot find counts path")
 
@@ -28,7 +28,7 @@ class Associative:
         fid2 = open(filteredCountsPath,'w')
         reader = csv.reader(fid1)
         writer = csv.writer(fid2)
-        header = reader.next()
+        header = next(reader)
         writer.writerow(header)
 
         for linja in reader:
@@ -38,7 +38,7 @@ class Associative:
         fid2.close()
         return filteredCountsPath
 
-    def run_deseq(countsPath,outFile):
+    def run_deseq(self,countsPath,outFile):
         cmd = "Rscript runDESeq.R %s %s"%(countsPath,outFile)
         print("running...\n%s"%cmd)
         run_subprocess(cmd)
@@ -46,11 +46,21 @@ class Associative:
 if __name__ == "__main__":
 
     ## specify the locations
-    homeDir = os.path.join(os.path.expanduser("~"),"sequencing","pieris")
-    readsDir = os.path.join(homeDir,'reads')
+    homeDir = os.path.join("..")
+    readsDir = os.path.join(homeDir, "reads")
 
-    featuresDir = os.path.join(homeDir,"features")
-    countsPath = os.path.join(featuresDir,"est_counts.csv")
-    filteredCountsPath = create_filtered(countsPath)
-    outFile = os.path.join(featuresDir,"deseq.csv")
-    run_deseq(filteredCountsPath,outFile)
+    featuresDir = os.path.join(homeDir,"examples", "pieris")
+    countsPath = os.path.join(featuresDir,"data", "est_counts.csv")
+    outDirectory = os.path.join(featuresDir, "results")
+    outFile = os.path.join(outDirectory, "deseq.csv")
+
+    # check if results directory exists, if !exist create one
+    try:
+        os.stat(outDirectory)
+    except:
+        os.mkdir(outDirectory)
+
+
+    associative = Associative()
+    filteredCountsPath = associative.create_filtered(countsPath)
+    associative.run_deseq(filteredCountsPath,outFile)

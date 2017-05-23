@@ -5,7 +5,7 @@
 
 ## samples notes
 # order:  17,18,33,46,56,61,DL47,DL61,D163,D178,D185,D239
-#        c('R','D','D','R','R','D','R','D','D','R','D','R') 
+#        c('R','D','D','R','R','D','R','D','D','R','D','R')
 #old
 # D: 17,46,56,DL61,D163,D185
 # R: 18,33,61,DL47,D178,D239
@@ -15,11 +15,11 @@
 
 
 # same as experiment 1 except we are filtering the genes
-library("DESeq2")
+suppressMessages(library("DESeq2"))
 args <-commandArgs(TRUE)
 
 if (length(args)==0){
-    print("ERROR: Did not specify counts file e.g 'Rscript runDESeq.R dn-genes-counts.csv'")    
+    print("ERROR: Did not specify counts file e.g 'Rscript runDESeq.R dn-genes-counts.csv'")
     q()
 }
 
@@ -27,7 +27,7 @@ countsFile = args[1]
 outFile = args[2]
 
 if (!file.exists(countsFile)){
-    print("ERROR: invalid counts file")    
+    print("ERROR: invalid counts file")
     q()
 }
 
@@ -46,7 +46,7 @@ dds$condition <- factor(dds$condition,levels=c("R","D"))
 dds <- DESeq(dds)
 rld <- rlog(dds, blind=TRUE)
 res <- results(dds)
-use <- res$baseMean>attr(res,"filterThreshold")
+use <- res$baseMean>metadata(res)$filterThreshold
 print(table(use))
 
 ## run DESeq2 using filtered data
