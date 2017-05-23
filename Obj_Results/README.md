@@ -1,1 +1,0 @@
-Files and sub directories for result objective to output to visualization
