@@ -106,4 +106,4 @@ if __name__ == '__main__':
     filename = 'data/Example_file.csv'
     df, sample_lst, gene_lst = get_dataframe_and_axes(filename, 'Gene ID')
     heatmap = make_heatmap_object(df, sample_lst, gene_lst)
-    app.run()
+    app.run('0.0.0.0')
