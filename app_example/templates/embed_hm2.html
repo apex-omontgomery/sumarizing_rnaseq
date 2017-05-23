@@ -11,10 +11,15 @@
     {{ css_resources|indent(4)|safe }}
 
     {{ plot_script|indent(4)|safe }}
-
+    <STYLE type="text/css">
+        BODY {text-align: center}
+    </STYLE>
   </head>
   <body>
-    {{ plot_div|indent(1000)|safe }}
+    <div style="width: 50%; display: inline-block;"> 
+        {{ plot_div | safe }}
+        {{ plot_script | safe }}
+    </div> 
     <p> Demonstrates a simple bokeh heat map embedding into a Flask app</p>
   </body>
 </html>
