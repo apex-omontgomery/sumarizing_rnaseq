@@ -5,7 +5,7 @@ Run DESeq and EdgeR
 
 import os,sys,re,csv
 import numpy as np
-from htsint import run_subprocess
+import subprocess
 
 
 class Associative():
@@ -18,6 +18,14 @@ class Associative():
         Constructor
 
         """
+
+    def run_subprocess(self,cmd):
+        proc = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stdin=subprocess.PIPE)
+        try:
+            outs, errs = proc.communicate(timeout=22000)
+        except TimeoutExpired:
+            proc.kill()
+            outs, errs = proc.communicate()
 
     def create_filtered(self, countsPath):
         if not os.path.exists(countsPath):
@@ -41,7 +49,7 @@ class Associative():
     def run_deseq(self,countsPath,outFile):
         cmd = "Rscript runDESeq.R %s %s"%(countsPath,outFile)
         print("running...\n%s"%cmd)
-        run_subprocess(cmd)
+        self.run_subprocess(cmd)
 
 if __name__ == "__main__":
 
