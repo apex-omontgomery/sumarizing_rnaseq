@@ -32,6 +32,77 @@
   </head>
 
   <body>
+  <div class="container">
+
+      <div class="starter-template">
+        <h1>Select files for display of visualization</h1>
+      </div>
+
+    </div><!-- /.container -->
+
+   
+
+    <div class="container">       
+        <div class="header">                               
+            
+                        
+        </div> 
+        <div class="jumbotron">
+        
+        <form action="/visualize" method="POST">
+        
+        
+                        
+        
+        
+        
+        <div>
+        
+        
+            <label>Select Adjusted Count File :</label>
+                <select name="file_1" width="300px">
+                {% for x in count_file %}
+                <option value="{{ x }}" SELECTED>{{ x }}</option>
+                {% endfor %}
+                </select>
+         </div>
+          
+          
+        <div>
+            <label>Select P-Value File :</label>
+                <select name="file_2" width="300px">
+                {% for x in count_file %}
+                <option value="{{ x }}" SELECTED>{{ x }}</option>
+                {% endfor %}
+                </select>
+        </div>
+        
+        <div>
+            <label>Select Plot Type:</label>
+                <select name="graph_type" width="300px">
+                {% for x in plot_type %}
+                <option value="{{ x }}" SELECTED>{{ x }}</option>
+                {% endfor %}
+                </select>
+        </div>
+        
+        <input type="submit" value="visualize"/>
+        
+        
+        
+        </form>
+        </div>
+           
+        
+            
+        <footer class="footer">
+        
+        </footer>
+    
+    
+
+
+    </div>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -60,15 +131,7 @@
       </div>
     </nav>
 
-    <div class="container">
-
-      <div class="starter-template">
-        <h1>This is the home page where we select the file to process</h1>
-        <p class="lead">File selection occurs here.<br> Maybe a drop down where the files live.</p>
-      </div>
-
-    </div><!-- /.container -->
-
+    
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
