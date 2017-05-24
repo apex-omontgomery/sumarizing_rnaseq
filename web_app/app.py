@@ -194,7 +194,11 @@ if __name__ == '__main__':
     max_num = 200
     p_possible = [.05, .04, .03, .02, .01]          
     
-    
+    port = 5000
+    url = "http://127.0.0.1:{0}".format(port)
+    threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
+
     
     # threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
-    app.run('0.0.0.0', port=80)
+    #app.run('0.0.0.0', port=80)
+    app.run(port = port)
