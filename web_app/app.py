@@ -116,9 +116,12 @@ def make_heatmap_object(df, sample_lst, gene_lst, df_p):
     ]
     return p
 
-def file_names(directory, type):
+def data_names(directory, type):
     return  [file for file in os.listdir(directory) if file.endswith(type)]
-  
+    
+def image_names(directory):
+    return  [os.path.join(directory,file) for file in os.listdir(directory)]
+    
 @app.route('/')
 def results():     
     return render_template('index.html', count_file = file_arr, p_file = file_arr, plot_type = avail_figure)
@@ -139,14 +142,15 @@ def visualize():
     css_resources = INLINE.render_css()
     # note that heapmap below is defined under if-name-main block
     script, div = components(heatmap)
-    
+    print(img_arr)
     
     html = render_template(
         'visualize.html',
         plot_script=script,
         plot_div=div,
         js_resources=js_resources,
-        css_resources=css_resources
+        css_resources=css_resources,
+        img_list =  img_arr
     )
     return encode_utf8(html)    
 
@@ -169,18 +173,19 @@ def contact():
     
 if __name__ == '__main__':
     avail_figure = [ 'Volcano','Heatmap']
-    file_arr = file_names('data','.csv')        
-    img_arr = file_names('figs', '.jpg')
-    
+    file_arr = data_names('data','.csv')        
+    img_arr = image_names('static/img')
+    print(file_arr)
+    print(img_arr)
     
     highest_p = .03
       
-    print(img_arr)
+    #print(img_arr)
     
     #df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(filename_count, filename_pvalue, 'Gene ID', highest_p)
     #heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
     port = 5000
-    #url = "http://127.0.0.1:{0}".format(port)
-    #threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
-    #app.run(port = port)
+    url = "http://127.0.0.1:{0}".format(port)
+    threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
+    app.run(port = port)
     #app.run(0.0.0.0, port = 80)
