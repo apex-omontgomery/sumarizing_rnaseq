@@ -52,7 +52,6 @@ with open(log_file, 'r') as fid:
     reader = csv.reader(fid)
     params = {key: ast.literal_eval(value) for (key,value) in reader}
 
-
 #### Run the classifiers ####
 print("...running cross validated model(s)")
 
