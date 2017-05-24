@@ -148,7 +148,8 @@ if __name__ == '__main__':
     highest_p = .03
     
     df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(filename_count, filename_pvalue, 'Gene ID', highest_p)
-    heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)port = 5000
+    heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
+    port = 5000
     url = "http://127.0.0.1:{0}".format(port)
     threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
     app.run(port = port)
