@@ -1,10 +1,14 @@
-from __future__ import print_function
 from math import pi
 import pandas as pd
-
+#interactive image modules
 from bokeh.embed import components
 from bokeh.resources import INLINE
 from bokeh.util.string import encode_utf8
+#dendogram modules
+from scipy.cluster.hierarchy import linkage, dendrogram
+from scipy.spatial.distance import pdist
+
+
 from bokeh.models import (
     ColumnDataSource,
     HoverTool,
@@ -13,13 +17,14 @@ from bokeh.models import (
     PrintfTickFormatter,
     ColorBar,
 )
-
 from bokeh.plotting import figure
-from flask import Flask, render_template
-import webbrowser, threading
-app = Flask(__name__)
+from flask import Flask, render_template, request
+import webbrowser, threading, os
 
-def get_dataframe_and_axes(fname=None,fname2=None, gene_col_name=None, max_value = None):
+
+app = Flask(__name__)  
+    
+def get_dataframe_and_axes(fname=None, fname2=None, gene_col_name=None, max_value = None):
     ''' arbitrary data for now '''
     #count file
     df_c = pd.read_csv(fname)
@@ -61,8 +66,6 @@ def get_dataframe_and_axes(fname=None,fname2=None, gene_col_name=None, max_value
     #df_p= df_p[df_p.columns[[0,-1]]]
         
     return df_c, sample_lst, gene_lst, df_p
-
- 
     
 def make_heatmap_object(df, sample_lst, gene_lst, df_p):
     ''' makes a bokeh figure '''
@@ -71,10 +74,15 @@ def make_heatmap_object(df, sample_lst, gene_lst, df_p):
     colors = colors2[::-1]
     mapper = LinearColorMapper(palette=colors, low=df['counts'].min(), high=df['counts'].max())
 
-    df = pd.merge(df, df_p, on = 'Gene_ID')
-    
+    df = pd.merge(df, df_p, on = 'Gene_ID')    
     source = ColumnDataSource(df)
-
+    
+    '''
+    distMatrix = pdist(df['counts'])
+    distMatrix = squareform(distMatrix)
+    linkageMatrix = linkage(distMatrix, method = 'complete')
+    source = linkageMatrix
+    '''
     TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
 
     # p is a bokeh figure object 
@@ -108,19 +116,31 @@ def make_heatmap_object(df, sample_lst, gene_lst, df_p):
     ]
     return p
 
-@app.route("/")
-def index():
-    return render_template('index.html')
+def file_names(directory, type):
+    return  [file for file in os.listdir(directory) if file.endswith(type)]
+  
+@app.route('/')
+def results():     
+    return render_template('index.html', count_file = file_arr, p_file = file_arr, plot_type = avail_figure)
 
-@app.route("/visualize")
-def visualize():
-    """ Simple embedding of a bokeh figure in Flask
-
-    """
+@app.route("/visualize", methods=['POST'])
+def visualize():   
+    graph = request.form['graph_type']
+    
+    #only special graph
+    if graph == avail_figure[-1]:
+        df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(    os.path.join('data',request.form['file_1']),     os.path.join('data',request.form['file_2']), 'Gene ID', highest_p)
+        heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
+    else:
+        print('Unable to plot Volcano')
+    
+    
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
     # note that heapmap below is defined under if-name-main block
     script, div = components(heatmap)
+    
+    
     html = render_template(
         'visualize.html',
         plot_script=script,
@@ -128,8 +148,15 @@ def visualize():
         js_resources=js_resources,
         css_resources=css_resources
     )
-    return encode_utf8(html)
+    return encode_utf8(html)    
 
+# maybe make a landing page with redirect to data enter page.  
+'''    
+@app.route("/")
+def index():
+    return render_template('index.html')
+'''
+    
 # about page
 @app.route('/about')
 def about():
@@ -138,16 +165,22 @@ def about():
 # contactpage
 @app.route('/contact')
 def contact():
-    return render_template('contact.html')
-
-if __name__ == '__main__':
-    filename_count = 'data/d_c.csv'
-    #filename_count = 'data/Example_file.csv'
-    filename_pvalue = 'data/d_p.csv'
-    # rename A1 to Gene_ID?
-    highest_p = .03
+    return render_template('contact.html')  
     
-    df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(filename_count, filename_pvalue, 'Gene ID', highest_p)
-    heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
-    # threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
-    app.run('0.0.0.0', port=80)
+if __name__ == '__main__':
+    avail_figure = [ 'Volcano','Heatmap']
+    file_arr = file_names('data','.csv')        
+    img_arr = file_names('figs', '.jpg')
+    
+    
+    highest_p = .03
+      
+    print(img_arr)
+    
+    #df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(filename_count, filename_pvalue, 'Gene ID', highest_p)
+    #heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
+    port = 5000
+    #url = "http://127.0.0.1:{0}".format(port)
+    #threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
+    #app.run(port = port)
+    #app.run(0.0.0.0, port = 80)
