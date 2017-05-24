@@ -148,4 +148,4 @@ if __name__ == '__main__':
     
     df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(filename_count, filename_pvalue, 'Gene ID', highest_p)
     heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
-    app.run()
+    app.run('0.0.0.0')
