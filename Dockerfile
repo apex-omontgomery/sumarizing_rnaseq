@@ -27,6 +27,6 @@ RUN git clone https://github.com/ajrichards/htsint.git /htsint
 WORKDIR /htsint
 RUN python3 setup.py install
 
-EXPOSE 5000
+EXPOSE 80
 WORKDIR /app/web_app
 CMD ["python3", "app.py"]

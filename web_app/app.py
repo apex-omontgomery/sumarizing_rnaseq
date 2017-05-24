@@ -13,9 +13,10 @@ from bokeh.models import (
     PrintfTickFormatter,
     ColorBar,
 )
-from bokeh.plotting import figure
 
+from bokeh.plotting import figure
 from flask import Flask, render_template
+import webbrowser, threading
 app = Flask(__name__)
 
 def get_dataframe_and_axes(fname=None,fname2=None, gene_col_name=None, max_value = None):
@@ -148,4 +149,5 @@ if __name__ == '__main__':
     
     df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(filename_count, filename_pvalue, 'Gene ID', highest_p)
     heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
-    app.run('0.0.0.0')
+    # threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
+    app.run('0.0.0.0', port=80)
