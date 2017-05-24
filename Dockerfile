@@ -5,7 +5,8 @@ RUN apt-get update -y
 RUN apt-get install -y python3 python3-pip python-dev build-essential git postgresql python3-tk
 
 COPY ./requirements.txt /app/requirements.txt
-ADD https://s3-us-west-2.amazonaws.com/biof-hackathon-arvos/htsint.sql /app/htsint.sql
+ADD https://s3-us-west-2.amazonaws.com/biof-hackathon-arvos/htsint.sql.gz /app/htsint.sql.gz
+RUN gunzip -c /app/htsint.sql.gz > /app/htsint.sql
 COPY ./dbconfig.log /root/.htsint/dbconfig.log
 WORKDIR /app
 
