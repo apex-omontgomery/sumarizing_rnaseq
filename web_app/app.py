@@ -21,7 +21,6 @@ from bokeh.plotting import figure
 from flask import Flask, render_template, request
 import webbrowser, threading, os
 
-
 app = Flask(__name__)  
     
 def get_dataframe_and_axes(fname=None, fname2=None, gene_col_name=None, max_value = None):
@@ -39,7 +38,20 @@ def get_dataframe_and_axes(fname=None, fname2=None, gene_col_name=None, max_valu
         df_p.rename(columns = {list(df_p)[0]: gene_col_name}, inplace = True)
     #drop rows with values greater than max p_value
     # list(df_p)[-1] is the p_value adjusted based off our r script. 
-    df_p = df_p[df_p[list(df_p)[-1]] <= max_value]   
+    df_p = df_p[df_p[list(df_p)[-1]] <= max_value]  
+    
+    
+    while df_p.shape[0] > max_num:
+        max_value -= .01
+        if max_value == 0:
+            print(' p = 0, something wrong with data')
+            quit()
+                        
+        df_p = df_p[df_p[list(df_p)[-1]] <= max_value]   
+        print('auto adjusted p-value cutoff to keep below maximum points')
+        print('new cutoff is: ' + str(max_value))
+    
+    
     #merge on p_value dataframe
     df_c = pd.merge(df_c, df_p, on='Gene ID')    
     
@@ -120,29 +132,30 @@ def data_names(directory, type):
     return  [file for file in os.listdir(directory) if file.endswith(type)]
     
 def image_names(directory):
-    return  [os.path.join(directory,file) for file in os.listdir(directory)]
+    return  [file for file in os.listdir(directory)]
     
 @app.route('/')
 def results():     
-    return render_template('index.html', count_file = file_arr, p_file = file_arr, plot_type = avail_figure)
+    return render_template('index.html', count_file = file_arr, p_file = file_arr, plot_type = avail_figure, p_value = p_possible)
 
 @app.route("/visualize", methods=['POST'])
 def visualize():   
     graph = request.form['graph_type']
-    
+    highest_p = float(request.form['p_return'])
     #only special graph
+    
     if graph == avail_figure[-1]:
         df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(    os.path.join('data',request.form['file_1']),     os.path.join('data',request.form['file_2']), 'Gene ID', highest_p)
         heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
     else:
         print('Unable to plot Volcano')
+        
     
     
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
     # note that heapmap below is defined under if-name-main block
     script, div = components(heatmap)
-    print(img_arr)
     
     html = render_template(
         'visualize.html',
@@ -150,8 +163,9 @@ def visualize():
         plot_div=div,
         js_resources=js_resources,
         css_resources=css_resources,
-        img_list =  img_arr
-    )
+        img_list = img_arr,
+        img_path = image_path
+        )
     return encode_utf8(html)    
 
 # maybe make a landing page with redirect to data enter page.  
@@ -173,17 +187,16 @@ def contact():
     
 if __name__ == '__main__':
     avail_figure = [ 'Volcano','Heatmap']
-    file_arr = data_names('data','.csv')        
-    img_arr = image_names('static/img')
-    print(file_arr)
-    print(img_arr)
+    data_path ='data'
+    data_type = '.csv'
+    image_path = 'static/img'
+    max_num = 200
+    p_possible = [.05, .04, .03, .02, .01]
     
-    highest_p = .03
-      
-    #print(img_arr)
+    file_arr = data_names(data_path, data_type)        
+    img_arr = image_names(image_path)
     
-    #df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(filename_count, filename_pvalue, 'Gene ID', highest_p)
-    #heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
+    
     port = 5000
     url = "http://127.0.0.1:{0}".format(port)
     threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
