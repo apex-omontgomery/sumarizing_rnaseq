@@ -79,6 +79,7 @@ if __name__ == "__main__":
         os.mkdir(outDirectory)
 
 
-    associative = Associative()
-    filteredCountsPath = associative.create_filtered(countsPath)
-    associative.run_deseq(filteredCountsPath,outFile)
+    pline = Pipeline()
+    filteredCountsPath = pline.create_filtered(countsPath)
+    pline.run_deseq(filteredCountsPath,outFile)
+    print("complete")
