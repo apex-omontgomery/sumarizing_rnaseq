@@ -53,13 +53,11 @@ def get_dataframe_and_axes(fname=None, fname2=None, gene_col_name=None, max_valu
     
     
     #merge on p_value dataframe
-    df_c = pd.merge(df_c, df_p, on='Gene ID')    
+    df_c = pd.merge(df_c, df_p, 
+                    on='Gene ID')    
     
     #keep only columsn from original count dataframe
     df_c = df_c[df_c.columns[:len_c_val]]
-    
-    
-    
     df_c['Gene_ID'] = df_c[gene_col_name].astype(str)
     df_c.drop([gene_col_name], axis=1, inplace=True)
     df_c = df_c.set_index('Gene_ID')
@@ -84,17 +82,12 @@ def make_heatmap_object(df, sample_lst, gene_lst, df_p):
     colors = ["#75968f", "#a5bab7", "#c9d9d3", "#e2e2e2", "#dfccce", "#ddb7b1", "#cc7878", "#933b41", "#550b1d"]
     colors2 =['#E5B000', '#CE9514', '#B77F24', '#A06C30','#895D36', '#724F39', '#5B4236', '#443430', '#2D2624','#161414', '#000000']
     colors = colors2[::-1]
+    
     mapper = LinearColorMapper(palette=colors, low=df['counts'].min(), high=df['counts'].max())
 
     df = pd.merge(df, df_p, on = 'Gene_ID')    
     source = ColumnDataSource(df)
     
-    '''
-    distMatrix = pdist(df['counts'])
-    distMatrix = squareform(distMatrix)
-    linkageMatrix = linkage(distMatrix, method = 'complete')
-    source = linkageMatrix
-    '''
     TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
 
     # p is a bokeh figure object 
@@ -106,7 +99,7 @@ def make_heatmap_object(df, sample_lst, gene_lst, df_p):
     p.grid.grid_line_color = None
     p.axis.axis_line_color = None
     p.axis.major_tick_line_color = None
-    p.axis.major_label_text_font_size = "10pt"
+    p.axis.major_label_text_font_size = "5pt"
     p.axis.major_label_standoff = 0
     p.xaxis.major_label_orientation = pi / 3
 
@@ -134,24 +127,30 @@ def data_names(directory, type):
 def image_names(directory):
     return  [file for file in os.listdir(directory)]
     
-@app.route('/')
+   
+    
+@app.route('/input')
 def results():     
-    return render_template('index.html', count_file = file_arr, p_file = file_arr, plot_type = avail_figure, p_value = p_possible)
+    file_arr = data_names(data_path, data_type) 
+    return render_template( 'input.html', count_file = file_arr, 
+                            p_file = file_arr, plot_type = avail_figure, 
+                            p_value = p_possible)
 
 @app.route("/visualize", methods=['POST'])
 def visualize():   
     graph = request.form['graph_type']
     highest_p = float(request.form['p_return'])
+    img_arr = image_names(image_path)
     #only special graph
     
     if graph == avail_figure[-1]:
-        df, sample_lst, gene_lst, df2 = get_dataframe_and_axes(    os.path.join('data',request.form['file_1']),     os.path.join('data',request.form['file_2']), 'Gene ID', highest_p)
-        heatmap = make_heatmap_object(df, sample_lst, gene_lst,df2)
+        df, sample_lst, gene_lst, df2 = get_dataframe_and_axes( os.path.join('data',request.form['file_1']),     
+                                                                os.path.join('data',request.form['file_2']), 'Gene ID', 
+                                                                highest_p)
+        heatmap = make_heatmap_object(  df, sample_lst, 
+                                        gene_lst,df2)
     else:
-        print('Unable to plot Volcano')
-        
-    
-    
+        print('Unable to plot Volcano')    
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
     # note that heapmap below is defined under if-name-main block
@@ -169,12 +168,13 @@ def visualize():
     return encode_utf8(html)    
 
 # maybe make a landing page with redirect to data enter page.  
-'''    
-@app.route("/")
-def index():
-    return render_template('index.html')
-'''
-    
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+   
+   
+   
 # about page
 @app.route('/about')
 def about():
@@ -186,15 +186,14 @@ def contact():
     return render_template('contact.html')  
     
 if __name__ == '__main__':
+    #configs
     avail_figure = [ 'Volcano','Heatmap']
     data_path ='data'
     data_type = '.csv'
-    image_path = 'static/img'
+    image_path = 'static/fig'
     max_num = 200
-    p_possible = [.05, .04, .03, .02, .01]
+    p_possible = [.05, .04, .03, .02, .01]          
     
-    file_arr = data_names(data_path, data_type)        
-    img_arr = image_names(image_path)
     
     
     port = 5000
