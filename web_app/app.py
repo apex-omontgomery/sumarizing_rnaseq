@@ -183,8 +183,4 @@ if __name__ == '__main__':
     #url = "http://127.0.0.1:{0}".format(port)
     #threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
     #app.run(port = port)
-<<<<<<< HEAD
-    #app.run(0.0.0.0)
-=======
     #app.run(0.0.0.0, port = 80)
->>>>>>> 884fe84a74d31ce2d4ddcaabbffffdcb39bc1c75
