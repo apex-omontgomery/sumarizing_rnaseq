@@ -13,9 +13,10 @@ from bokeh.models import (
     PrintfTickFormatter,
     ColorBar,
 )
-from bokeh.plotting import figure
 
+from bokeh.plotting import figure
 from flask import Flask, render_template
+import webbrowser, threading
 app = Flask(__name__)
 
 def get_dataframe_and_axes(fname=None,fname2=None, gene_col_name=None, max_value = None):
