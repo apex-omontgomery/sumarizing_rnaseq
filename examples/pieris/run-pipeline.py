@@ -27,8 +27,12 @@ results_dir = os.path.join(".","results")
 pline = Pipeline(results_dir)
 
 figures_dir = os.path.join(results_dir, "figures")
+
+temp_figures_dir = os.path.join("..", "..", "web_app", "static", "img")
 if not os.path.exists(figures_dir):
     print("creating a figures directory")
+print(os.getcwd())
+print(temp_figures_dir)
 
 deseq_file = os.path.join(results_dir,"deseq.csv")
 deseq_matrix_file = os.path.join(results_dir,"deseq-samples.csv")
@@ -97,6 +101,7 @@ plt.legend(loc='lower right')
 plt.plot([0,1],[0,1],'r--')
 plt.xlim([-0.1,1.2])
 plt.ylim([-0.1,1.2])
+plt.savefig(os.path.join(temp_figures_dir, "roc_curves.png"))
 plt.show()
 
 print("Done")
