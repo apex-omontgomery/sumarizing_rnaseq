@@ -1,0 +1,6 @@
+dbuser,docker
+dbpass,docker
+dbname,docker
+data,~/
+dbhost,localhost
+dbport,5432
