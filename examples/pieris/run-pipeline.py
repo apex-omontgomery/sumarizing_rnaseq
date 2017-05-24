@@ -26,6 +26,10 @@ from Pipeline import Pipeline
 results_dir = os.path.join(".","results")
 pline = Pipeline(results_dir)
 
+figures_dir = os.path.join(results_dir, "figures")
+if not os.path.exists(figures_dir):
+    print("creating a figures directory")
+
 deseq_file = os.path.join(results_dir,"deseq.csv")
 deseq_matrix_file = os.path.join(results_dir,"deseq-samples.csv")
 targets_file = os.path.join(".","data","targets.csv")

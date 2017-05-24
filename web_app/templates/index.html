@@ -77,7 +77,14 @@
                 {% endfor %}
                 </select>
         </div>
-        
+        <div>
+            <label>Select P-Value Cutoff:</label>
+                <select name="p_return" width="300px">
+                {% for x in p_value %}
+                <option value="{{ x }}" SELECTED>{{ x }}</option>
+                {% endfor %}
+                </select>
+        </div>
         <input type="submit" value="visualize"/>
         
         
