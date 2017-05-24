@@ -65,21 +65,16 @@ class Pipeline(object):
         
         ## read in files
         deseqIds, deseqColumns, deseqMat = read_de_results(deseq_file,tool='DESeq')
-        dfeIds,dfeColumns,dfeMat = read_matrix(deseq_matrix_file,mtype='float')
+        dfeIds,dfeColumns,X = read_matrix(deseq_matrix_file,mtype='float')
         y = np.loadtxt(targets_file,delimiter=",")
         print(y)
         
         ## save columns and rows
         self.deseqIds, self.deseqColumns = deseqIds, deseqColumns
-        self.dfeIds, self.dfeColumns =  dfeIds, dfeColumns
+        self.dfe_genes, self.dfe_samples =  dfeIds, dfeColumns
+        self.deseqMat = deseqMat
         
-        ## generate X,y
-        print(deseqMat.shape)
-        print(dfeMat.shape)
-
-        X = deseqMat
-        
-        return X,y
+        return X.transpose(),y
 
 
     #######################################
