@@ -32,6 +32,82 @@
   </head>
 
   <body>
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Select files for display of visualization</h1>
+      </div>
+
+    </div><!-- /.container -->
+
+   
+
+    <div class="container">    
+        <div class="row">    
+            
+            <div class="col-md-6 col-md-offset-3">
+            
+                <!--<div class="header">         
+                </div> -->
+                
+                <div class="jumbotron">
+                
+                    
+                    <form action="/visualize" method="POST" align="center" style="width:100%">        
+                    
+                    <div>
+                    
+                    
+                        <label>Adj Count File :</label>
+                            <select name="file_1" width="300px">
+                            {% for x in count_file %}
+                            <option value="{{ x }}" SELECTED>{{ x }}</option>
+                            {% endfor %}
+                            </select>
+                     </div>
+                      
+                      
+                    <div>
+                        <label>P-Value File :</label>
+                            <select name="file_2" width="300px">
+                            {% for x in count_file %}
+                            <option value="{{ x }}" SELECTED>{{ x }}</option>
+                            {% endfor %}
+                            </select>
+                    </div>
+                    
+                    <div>
+                        <label>Plot Type:</label>
+                            <select name="graph_type" width="300px">
+                            {% for x in plot_type %}
+                            <option value="{{ x }}" SELECTED>{{ x }}</option>
+                            {% endfor %}
+                            </select>
+                    </div>
+                    <div>
+                        <label>P-Value Cutoff:</label>
+                            <select name="p_return" width="300px">
+                            {% for x in p_value %}
+                            <option value="{{ x }}" SELECTED>{{ x }}</option>
+                            {% endfor %}
+                            </select>
+                    </div>
+                    <input type="submit" value="visualize" style="width:50%"/>
+                    
+                
+                
+                    </form>
+                </div>
+                <!--
+                <div class="footer">            
+                </div> --> 
+            
+            </div>   
+        
+        </div>
+
+
+    </div>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -60,15 +136,7 @@
       </div>
     </nav>
 
-    <div class="container">
-
-      <div class="starter-template">
-        <h1>About</h1>
-        <p class="lead">This is all about the project.<br>So many smart things to say.</p>
-      </div>
-
-    </div><!-- /.container -->
-
+    
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

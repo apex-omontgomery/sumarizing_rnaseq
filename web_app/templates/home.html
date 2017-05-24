@@ -33,77 +33,15 @@
 
   <body>
   <div class="container">
-
-      <div class="starter-template">
-        <h1>Select files for display of visualization</h1>
-      </div>
-
-    </div><!-- /.container -->
+    <div class="starter-template" onclick="location.href='/input';" style="cursor: pointer;">
+   
+        <img src="../static/img/logo.png" style="width: 50%; display:inline-block;"/>    
+        <h2 align="center"> Adaptive Results Visualization of Sequences</h3>
+    </div>
+  </div><!-- /.container -->
 
    
-
-    <div class="container">       
-        <div class="header">            
-        </div> 
-        <div class="jumbotron">
-        
-        <form action="/visualize" method="POST">        
-        <div>
-        
-        
-            <label>Select Adjusted Count File :</label>
-                <select name="file_1" width="300px">
-                {% for x in count_file %}
-                <option value="{{ x }}" SELECTED>{{ x }}</option>
-                {% endfor %}
-                </select>
-         </div>
-          
-          
-        <div>
-            <label>Select P-Value File :</label>
-                <select name="file_2" width="300px">
-                {% for x in count_file %}
-                <option value="{{ x }}" SELECTED>{{ x }}</option>
-                {% endfor %}
-                </select>
-        </div>
-        
-        <div>
-            <label>Select Plot Type:</label>
-                <select name="graph_type" width="300px">
-                {% for x in plot_type %}
-                <option value="{{ x }}" SELECTED>{{ x }}</option>
-                {% endfor %}
-                </select>
-        </div>
-        <div>
-            <label>Select P-Value Cutoff:</label>
-                <select name="p_return" width="300px">
-                {% for x in p_value %}
-                <option value="{{ x }}" SELECTED>{{ x }}</option>
-                {% endfor %}
-                </select>
-        </div>
-        <input type="submit" value="visualize"/>
-        
-        
-        
-        </form>
-        </div>
-           
-        
-            
-        <footer class="footer">
-        
-        </footer>
-    
-    
-
-
-    </div>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+   <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -112,12 +50,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">ARVOS</a>
+          <a class="navbar-brand" href="/">ARVOS</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li>
-                <a href="/">Index</a>
+                <a href="/input">Visualize</a>
             </li>
             <li>
                 <a href="/about">About</a>
