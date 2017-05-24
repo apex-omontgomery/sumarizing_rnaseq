@@ -74,7 +74,7 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Here is where our amazing visualizations live.</h1>
+        <h1>Here are our most amazing visualizations.</h1>
         <p class="lead">We have your interactive heat maps.<br> We have your data in fewer dimensions.</p>
       </div>
 
@@ -94,6 +94,14 @@
         {{ plot_script | safe }}
     </div> 
     <p> Demonstrates a simple bokeh heat map embedding into a Flask app</p>
-  
+    
+    <div>
+    {% for x in image_list: %}    
+        <img src="{{ x }}" width="120" height="90" />
+
+    {% endfor %}
+    </div>
+    
+    
   </body>
 </html>
