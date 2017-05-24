@@ -18,6 +18,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn import metrics, svm
+from htsint.tools import Heatmap
 
 sys.path.append(os.path.join("..","..","arvos"))
 from Pipeline import Pipeline
@@ -30,6 +31,20 @@ deseq_matrix_file = os.path.join(results_dir,"deseq-samples.csv")
 targets_file = os.path.join(".","data","targets.csv")
 
 X,y = pline.generate_features_and_targets(deseq_file,deseq_matrix_file,targets_file)
+
+#hm = Heatmap(X,colLabels=np.array(["A","B","C","D","E","F"]),\
+#             rowLabels= np.array(["r"+str(i) for i in range(n*2)]))
+#hm.cluster(0)
+#hm.cluster(1)
+#hm.draw_heatmap(cmap='rg',clabels = True, rlabels=True)
+
+## error checking
+hm.show()
+
+
+
+
+sys.exit()
 
 
 ## use saved grid search parameters
