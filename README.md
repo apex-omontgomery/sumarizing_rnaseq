@@ -26,6 +26,13 @@ environment that **encourages** the comparison of models.  Sklearn has
 become one of the easiest toolkits to carry out predictive analytics
 and it will be at the center of our solution for this objective.
 
+Methods
+----------------
+
+![Conceptual diagram](arvos-conceptual.png)
+
+
+
 Examples
 -----------------
 
